@@ -34,7 +34,7 @@ const genresList = [
 ];
 
 const formSchema = z.object({
-  genres: z.string().min(1, 'Please select at least one genre.'),
+  genres: z.string().optional(),
   actors: z.string().optional(),
   directors: z.string().optional(),
   themes: z.string().optional(),

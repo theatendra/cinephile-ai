@@ -15,7 +15,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import type { Recommendation, QuestionnaireData } from '@/lib/types';
 
 const formSchema = z.object({
-  genres: z.string().min(1, 'Please select at least one genre.'),
+  genres: z.string().optional(),
   actors: z.string().optional(),
   directors: z.string().optional(),
   themes: z.string().optional(),
@@ -56,7 +56,7 @@ export default function Home() {
     if (userPreferences) {
       form.reset(userPreferences);
     }
-  }, [userPreferences, form.reset]);
+  }, [userPreferences, form]);
 
 
   return (

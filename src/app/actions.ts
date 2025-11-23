@@ -31,14 +31,6 @@ export async function getRecommendationsAction(
       timePeriod: formData.get('timePeriod') as string,
     };
 
-    if (!userInput.genres) {
-      return {
-        recommendations: null,
-        userPreferences: userInput,
-        error: 'Please select at least one genre.',
-      }
-    }
-
     const aiResult: PersonalizedRecommendationsOutput =
       await generatePersonalizedRecommendations(userInput);
 
