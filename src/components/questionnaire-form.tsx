@@ -1,0 +1,169 @@
+'use client';
+
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
+
+import { Button } from '@/components/ui/button';
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Clapperboard, Loader2 } from 'lucide-react';
+
+const formSchema = z.object({
+  genres: z.string().min(1, 'Please enter at least one genre.'),
+  actors: z.string().optional(),
+  directors: z.string().optional(),
+  themes: z.string().optional(),
+  vibe: z.string().min(1, 'Please describe your current vibe.'),
+  timePeriod: z.string().optional(),
+});
+
+type QuestionnaireFormProps = {
+  formAction: (payload: FormData) => void;
+  pending: boolean;
+  error: string | null;
+};
+
+export function QuestionnaireForm({ formAction, pending, error }: QuestionnaireFormProps) {
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      genres: '',
+      actors: '',
+      directors: '',
+      themes: '',
+      vibe: '',
+      timePeriod: '',
+    },
+  });
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    const formData = new FormData();
+    for (const key in values) {
+      if (Object.prototype.hasOwnProperty.call(values, key)) {
+        formData.append(key, (values as any)[key]);
+      }
+    }
+    formAction(formData);
+  }
+
+  return (
+    <Card className="w-full max-w-4xl mx-auto shadow-xl">
+      <CardHeader>
+        <CardTitle className="font-headline text-3xl flex items-center gap-3">
+          <Clapperboard className="w-8 h-8 text-primary" />
+          Find Your Next Movie
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <div className="grid md:grid-cols-2 gap-6">
+              <FormField
+                control={form.control}
+                name="genres"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Favorite Genres</FormLabel>
+                    <FormControl>
+                      <Input placeholder="e.g., Sci-Fi, Thriller, Comedy" {...field} />
+                    </FormControl>
+                    <FormDescription>
+                      Separate genres with a comma.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="vibe"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>What's the Vibe?</FormLabel>
+                    <FormControl>
+                      <Input placeholder="e.g., Cozy night in, adventurous" {...field} />
+                    </FormControl>
+                     <FormDescription>
+                      How are you feeling right now?
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+               <FormField
+                control={form.control}
+                name="actors"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Favorite Actors (Optional)</FormLabel>
+                    <FormControl>
+                      <Input placeholder="e.g., Tom Hanks, Denzel Washington" {...field} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="directors"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Favorite Directors (Optional)</FormLabel>
+                    <FormControl>
+                      <Input placeholder="e.g., Christopher Nolan" {...field} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="themes"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Favorite Themes (Optional)</FormLabel>
+                    <FormControl>
+                      <Input placeholder="e.g., Underdog story, space exploration" {...field} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="timePeriod"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Preferred Time Period (Optional)</FormLabel>
+                    <FormControl>
+                      <Input placeholder="e.g., 1990s, modern, black and white" {...field} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <Button type="submit" disabled={pending} className="w-full md:w-auto bg-accent text-accent-foreground hover:bg-accent/90">
+              {pending ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Generating...
+                </>
+              ) : (
+                'Get Recommendations'
+              )}
+            </Button>
+            {error && <p className="text-destructive mt-4">{error}</p>}
+          </form>
+        </Form>
+      </CardContent>
+    </Card>
+  );
+}
