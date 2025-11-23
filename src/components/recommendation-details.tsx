@@ -10,7 +10,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { ExternalLink, Film, MessageCircle, Star, Users, Youtube, Clapperboard } from 'lucide-react';
 import { ScrollArea } from './ui/scroll-area';
 import { Button } from './ui/button';
-import { getStreamingIcon } from './streaming-icons';
+import { Badge } from './ui/badge';
 
 type RecommendationDetailsProps = {
   movie: Recommendation;
@@ -124,12 +124,11 @@ export function RecommendationDetails({ movie, userPreferences }: Recommendation
                         </DetailSection>
 
                         <DetailSection icon={<ExternalLink className="w-5 h-5"/>} title="Where to Watch">
-                             <div className="flex flex-wrap gap-4 items-center">
+                             <div className="flex flex-wrap gap-2 items-center">
                                 {details.streamingAvailability.length > 0 ? (
-                                    details.streamingAvailability.map(platform => {
-                                        const Icon = getStreamingIcon(platform);
-                                        return Icon ? <Icon key={platform} /> : <span key={platform} className="text-sm">{platform}</span>;
-                                    })
+                                    details.streamingAvailability.map(platform => (
+                                        <Badge key={platform} variant="secondary" className="text-base font-bold">{platform}</Badge>
+                                    ))
                                 ) : (
                                     <p className="text-sm text-muted-foreground">Not available for streaming.</p>
                                 )}
