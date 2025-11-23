@@ -52,6 +52,13 @@ export default function Home() {
     },
   });
 
+  useEffect(() => {
+    if (userPreferences) {
+      form.reset(userPreferences);
+    }
+  }, [userPreferences, form.reset]);
+
+
   return (
     <div className="flex flex-col min-h-screen">
       <header className="py-10">
