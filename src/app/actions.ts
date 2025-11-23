@@ -11,6 +11,7 @@ import {
   type DisplayDetailedMovieInformationOutput,
 } from '@/ai/flows/display-detailed-movie-information';
 import type { Recommendation, QuestionnaireData } from '@/lib/types';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export async function getRecommendationsAction(
   prevState: any,
@@ -32,8 +33,15 @@ export async function getRecommendationsAction(
     const aiResult: PersonalizedRecommendationsOutput =
       await generatePersonalizedRecommendations(userInput);
 
+    const recommendationsWithPlaceholders = aiResult.recommendations.map(
+      (rec, index) => ({
+        ...rec,
+        poster: PlaceHolderImages[index % PlaceHolderImages.length].imageUrl,
+      })
+    );
+
     return {
-      recommendations: aiResult.recommendations,
+      recommendations: recommendationsWithPlaceholders,
       userPreferences: userInput,
       error: null,
     };
