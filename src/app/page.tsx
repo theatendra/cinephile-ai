@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useActionState } from 'react';
+import { useState, useActionState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -69,7 +69,7 @@ export default function Home() {
 
         {pending && (
           <section id="recommendations-loading">
-             <h2 className="font-headline text-4xl text-center mb-8">Curating your recommendations...</h2>
+             <h2 className="font-headline text-4xl text-center mb-8">Finding suitable films for you...</h2>
              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <Skeleton className="h-[520px] w-full rounded-lg" />
                 <Skeleton className="h-[520px] w-full rounded-lg" />
@@ -78,7 +78,7 @@ export default function Home() {
           </section>
         )}
 
-        {recommendations && recommendations.length > 0 && (
+        {recommendations && recommendations.length > 0 && !pending && (
           <section id="recommendations" className="animate-in fade-in-50 duration-500">
             <h2 className="font-headline text-4xl text-center mb-8">Here's What We Found For You</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
