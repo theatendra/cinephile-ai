@@ -21,11 +21,19 @@ const DisplayDetailedMovieInformationInputSchema = z.object({
   vibe: z.string().describe('The current vibe of the user.'),
   timePeriod: z.string().describe('The preferred time period of the user.'),
   summary: z.string().describe('A short summary of the movie.'),
-  ratings: z.number().describe('The average rating of the movie.'),
+  imdbRating: z.string().describe("The movie's rating on IMDb."),
+  rottenTomatoesRating: z.string().describe("The movie's rating on Rotten Tomatoes."),
 });
 export type DisplayDetailedMovieInformationInput = z.infer<
   typeof DisplayDetailedMovieInformationInputSchema
 >;
+
+const CastCrewDetailsSchema = z.object({
+    cast: z.array(z.string()).describe("A list of the main actors in the movie."),
+    director: z.array(z.string()).describe("The director(s) of the movie."),
+    studio: z.string().describe("The production studio of the movie."),
+});
+
 
 const DisplayDetailedMovieInformationOutputSchema = z.object({
   summary: z.string().describe('A short summary of the movie.'),
@@ -33,8 +41,8 @@ const DisplayDetailedMovieInformationOutputSchema = z.object({
     .string()
     .describe('A personalized reason why the user will like the movie.'),
   redditComment: z.string().describe('A relevant Reddit comment about the movie.'),
-  castDetails: z.string().describe('Details about the cast of the movie.'),
-  streamingAvailability: z.string().describe('Where the movie is available to stream.'),
+  castAndCrew: CastCrewDetailsSchema.describe("Details about the movie's cast, director, and studio."),
+  streamingAvailability: z.array(z.string()).describe('A list of platforms where the movie is available to stream (e.g., "Netflix", "Hulu", "Amazon Prime Video"). If not known, return an empty array.'),
   trailerSearchLink: z.string().describe('A link to search for the movie trailer.'),
 });
 export type DisplayDetailedMovieInformationOutput = z.infer<
@@ -51,7 +59,7 @@ const prompt = ai.definePrompt({
   name: 'displayDetailedMovieInformationPrompt',
   input: {schema: DisplayDetailedMovieInformationInputSchema},
   output: {schema: DisplayDetailedMovieInformationOutputSchema},
-  prompt: `You are an AI movie expert. Given the following movie details and user preferences, provide a personalized recommendation, a relevant Reddit comment, cast details, streaming availability, and a trailer search link.\n\nMovie Details:\nTitle: {{{title}}}\nYear: {{{year}}}\nGenres: {{#each genres}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}\nActors: {{#each actors}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}\nDirectors: {{#each directors}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}\nThemes: {{#each themes}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}\nSummary: {{{summary}}}\nRatings: {{{ratings}}}\n\nUser Preferences:\nVibe: {{{vibe}}}\nTime Period: {{{timePeriod}}}\n\nProvide the following information:\n- A personalized recommendation (personalizedRecommendation) explaining why the user will like the movie based on their preferences.\n- A relevant Reddit comment (redditComment) about the movie. If no relevant comment exists, make one up.\n- Cast details (castDetails) formatted as: "cast [comma-separated list of main actors] and [director's name] and [studio name]".\n- Streaming availability (streamingAvailability) - list where the movie is available to stream, if known. If not known say "Streaming availability not available".\n- A trailer search link (trailerSearchLink) to search for the movie trailer on YouTube using the movie title and year. Start the search with "https://www.youtube.com/results?search_query=".\n\n\nOutput the result as JSON:
+  prompt: `You are an AI movie expert. Given the following movie details and user preferences, provide a personalized recommendation, a relevant Reddit comment, structured cast and crew details, streaming availability, and a trailer search link.\n\nMovie Details:\nTitle: {{{title}}}\nYear: {{{year}}}\nGenres: {{#each genres}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}\nActors from user: {{#each actors}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}\nDirectors from user: {{#each directors}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}\nThemes: {{#each themes}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}\nIMDb Rating: {{{imdbRating}}}\nRotten Tomatoes Rating: {{{rottenTomatoesRating}}}\n\nUser Preferences:\nVibe: {{{vibe}}}\nTime Period: {{{timePeriod}}}\n\nProvide the following information:\n- A personalized recommendation (personalizedRecommendation) explaining why the user will like the movie based on their preferences.\n- A relevant Reddit comment (redditComment) about the movie. If no relevant comment exists, make one up.\n- Structured cast and crew details (castAndCrew) with 'cast', 'director', and 'studio' fields. Find the actual main cast, director, and studio for the movie.\n- A list of streaming platforms (streamingAvailability). Common values are "Netflix", "Hulu", "Amazon Prime Video", "Disney+", "Max". If unknown, return an empty array.\n- A trailer search link (trailerSearchLink) to search for the movie trailer on YouTube using the movie title and year. Start the search with "https://www.youtube.com/results?search_query=".\n\n\nOutput the result as JSON:
 `,
 });
 

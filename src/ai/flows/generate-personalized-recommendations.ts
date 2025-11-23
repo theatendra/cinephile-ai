@@ -24,7 +24,9 @@ const MovieRecommendationSchema = z.object({
   title: z.string().describe('Title of the movie.'),
   year: z.string().describe('Year the movie was released.'),
   poster: z.string().describe('URL of the movie poster.'),
-  ratings: z.string().describe('Movie ratings from various sources.'),
+  imdbRating: z.string().describe("The movie's rating on IMDb."),
+  rottenTomatoesRating: z.string().describe("The movie's rating on Rotten Tomatoes."),
+  vibe: z.string().describe('The overall vibe or mood of the film.'),
 });
 
 const PersonalizedRecommendationsOutputSchema = z.object({
@@ -51,7 +53,7 @@ const prompt = ai.definePrompt({
   Vibe: {{{vibe}}}
   Time Period: {{{timePeriod}}}
 
-  Format the output as a JSON object with a 'recommendations' field. Each movie object in the 'recommendations' array should include the following keys: title, year, poster, and ratings. Make sure the year is a string, not a number.
+  Format the output as a JSON object with a 'recommendations' field. Each movie object in the 'recommendations' array should include the following keys: title, year, poster, imdbRating, rottenTomatoesRating, and vibe. Make sure the year is a string, not a number. If a rating isn't available, use "N/A".
   `,
 });
 

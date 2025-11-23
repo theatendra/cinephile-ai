@@ -2,15 +2,21 @@ export type Recommendation = {
   title: string;
   year: string;
   poster: string;
-  ratings: string;
+  imdbRating: string;
+  rottenTomatoesRating: string;
+  vibe: string;
 };
 
 export type MovieDetails = {
   summary: string;
   personalizedRecommendation: string;
   redditComment: string;
-  castDetails: string;
-  streamingAvailability: string;
+  castAndCrew: {
+    cast: string[];
+    director: string[];
+    studio: string;
+  };
+  streamingAvailability: string[];
   trailerSearchLink: string;
 };
 

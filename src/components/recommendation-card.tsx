@@ -1,9 +1,11 @@
 'use client';
 
 import Image from 'next/image';
-import { Star } from 'lucide-react';
+import { Sparkles, Tv } from 'lucide-react';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import type { Recommendation } from '@/lib/types';
+import { Badge } from './ui/badge';
+import { rottenTomatoesIcon, imdbIcon } from './streaming-icons';
 
 type RecommendationCardProps = {
   movie: Recommendation;
@@ -29,13 +31,23 @@ export function RecommendationCard({ movie, onSelectMovie, index }: Recommendati
         />
       </CardHeader>
       <CardContent className="p-4 flex-grow">
-        <CardTitle className="font-headline text-2xl">{movie.title}</CardTitle>
-        <p className="text-muted-foreground">{movie.year}</p>
+        <CardTitle className="font-headline text-2xl mb-2">{movie.title}</CardTitle>
+        <p className="text-muted-foreground text-sm">{movie.year}</p>
+        <div className="flex items-center gap-2 mt-2">
+            <Sparkles className="w-4 h-4 text-primary" />
+            <p className="text-sm text-muted-foreground font-semibold">{movie.vibe}</p>
+        </div>
       </CardContent>
-      <CardFooter className="p-4 pt-0">
-        <div className="flex items-center gap-2 text-amber-400">
-          <Star className="w-5 h-5 fill-current" />
-          <span className="font-bold text-lg text-foreground">{movie.ratings}</span>
+      <CardFooter className="p-4 pt-0 flex-col items-start gap-3">
+         <div className="flex items-center gap-4 text-foreground">
+            <div className="flex items-center gap-1.5">
+                {rottenTomatoesIcon}
+                <span className="font-bold text-sm">{movie.rottenTomatoesRating}</span>
+            </div>
+             <div className="flex items-center gap-1.5">
+                {imdbIcon}
+                <span className="font-bold text-sm">{movie.imdbRating}</span>
+            </div>
         </div>
       </CardFooter>
     </Card>

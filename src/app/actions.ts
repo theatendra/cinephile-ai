@@ -23,13 +23,21 @@ export async function getRecommendationsAction(
 }> {
   try {
     const userInput: PersonalizedRecommendationsInput = {
-      genres: formData.get('genres') as string,
+      genres: formData.get('genres') as string || '',
       actors: formData.get('actors') as string,
       directors: formData.get('directors') as string,
       themes: formData.get('themes') as string,
       vibe: formData.get('vibe') as string,
       timePeriod: formData.get('timePeriod') as string,
     };
+
+    if (!userInput.genres) {
+      return {
+        recommendations: null,
+        userPreferences: null,
+        error: 'Please select at least one genre.',
+      }
+    }
 
     const aiResult: PersonalizedRecommendationsOutput =
       await generatePersonalizedRecommendations(userInput);
@@ -62,7 +70,8 @@ export async function getMovieDetailsAction(
     const input: DisplayDetailedMovieInformationInput = {
       title: movie.title,
       year: parseInt(movie.year, 10) || new Date().getFullYear(),
-      ratings: parseFloat(movie.ratings) || 0,
+      imdbRating: movie.imdbRating,
+      rottenTomatoesRating: movie.rottenTomatoesRating,
       genres: userPreferences.genres ? userPreferences.genres.split(',').map(g => g.trim()) : [],
       actors: userPreferences.actors ? userPreferences.actors.split(',').map(a => a.trim()) : [],
       directors: userPreferences.directors ? userPreferences.directors.split(',').map(d => d.trim()) : [],
@@ -76,13 +85,18 @@ export async function getMovieDetailsAction(
     return details;
   } catch (e) {
     console.error(e);
+    // Fallback response in case of an error
     return {
-      summary: 'Could not load movie details.',
-      personalizedRecommendation: 'An error occurred while fetching personalized information.',
-      redditComment: 'N/A',
-      castDetails: 'N/A',
-      streamingAvailability: 'N/A',
-      trailerSearchLink: `https://www.youtube.com/results?search_query=${encodeURIComponent(movie.title + ' ' + movie.year + ' trailer')}`,
+        summary: 'Could not load movie details.',
+        personalizedRecommendation: 'An error occurred while fetching personalized information.',
+        redditComment: 'N/A',
+        castAndCrew: {
+            cast: [],
+            director: [],
+            studio: 'N/A',
+        },
+        streamingAvailability: [],
+        trailerSearchLink: `https://www.youtube.com/results?search_query=${encodeURIComponent(movie.title + ' ' + movie.year + ' trailer')}`,
     };
   }
 }

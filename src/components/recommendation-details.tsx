@@ -7,10 +7,10 @@ import { getMovieDetailsAction } from '@/app/actions';
 import type { Recommendation, QuestionnaireData, MovieDetails } from '@/lib/types';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { ExternalLink, Film, MessageCircle, Star, Users, Youtube } from 'lucide-react';
+import { ExternalLink, Film, MessageCircle, Star, Users, Youtube, Clapperboard } from 'lucide-react';
 import { ScrollArea } from './ui/scroll-area';
 import { Button } from './ui/button';
+import { getStreamingIcon } from './streaming-icons';
 
 type RecommendationDetailsProps = {
   movie: Recommendation;
@@ -58,9 +58,15 @@ export function RecommendationDetails({ movie, userPreferences }: Recommendation
                     </div>
                     <h2 className="font-headline text-3xl">{movie.title}</h2>
                     <p className="text-muted-foreground text-lg mb-2">{movie.year}</p>
-                    <div className="flex items-center gap-2 text-amber-400 mb-4">
-                    <Star className="w-5 h-5 fill-current" />
-                    <span className="font-bold text-lg text-foreground">{movie.ratings}</span>
+                    <div className="flex items-center gap-4 text-amber-400 mb-4">
+                      <div className="flex items-center gap-1.5">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 fill-current text-red-600"><path d="M10.3 2.2c-.1-.3-.4-.5-.8-.5s-.7.2-.8.5L4 8.3c-.2.3-.2.7 0 1l4.9 6.3c.2.2.5.3.8.3s.6-.1.8-.3l4.9-6.3c.2-.3.2-.7 0-1L10.3 2.2Z"/><path d="m9.2 2.6 4.9 6.3c.2.3.2.7 0 1L9.2 16.2"/><path d="M4.4 8.8 9.2 2.6"/><path d="m15.6 8.8-4.9-6.3"/></svg>
+                          <span className="font-bold text-lg text-foreground">{movie.rottenTomatoesRating}</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 fill-current text-yellow-500"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                          <span className="font-bold text-lg text-foreground">{movie.imdbRating}</span>
+                      </div>
                     </div>
                     {loading ? (
                         <Skeleton className="h-10 w-full" />
@@ -101,11 +107,33 @@ export function RecommendationDetails({ movie, userPreferences }: Recommendation
                         </DetailSection>
 
                         <DetailSection icon={<Users className="w-5 h-5"/>} title="Cast & Crew">
-                            <p>{details.castDetails}</p>
+                            <div className="space-y-2">
+                                <div>
+                                    <p className="font-bold">Cast:</p>
+                                    <p>{details.castAndCrew.cast.join(', ')}</p>
+                                </div>
+                                <div>
+                                    <p className="font-bold">Director:</p>
+                                    <p>{details.castAndCrew.director.join(', ')}</p>
+                                </div>
+                                <div>
+                                    <p className="font-bold">Studio:</p>
+                                    <p>{details.castAndCrew.studio}</p>
+                                </div>
+                            </div>
                         </DetailSection>
 
                         <DetailSection icon={<ExternalLink className="w-5 h-5"/>} title="Where to Watch">
-                            <Badge variant="secondary">{details.streamingAvailability}</Badge>
+                             <div className="flex flex-wrap gap-4 items-center">
+                                {details.streamingAvailability.length > 0 ? (
+                                    details.streamingAvailability.map(platform => {
+                                        const Icon = getStreamingIcon(platform);
+                                        return Icon ? <Icon key={platform} /> : <span key={platform} className="text-sm">{platform}</span>;
+                                    })
+                                ) : (
+                                    <p className="text-sm text-muted-foreground">Not available for streaming.</p>
+                                )}
+                            </div>
                         </DetailSection>
                     </>
                 )
