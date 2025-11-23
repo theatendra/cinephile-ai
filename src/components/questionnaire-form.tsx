@@ -80,6 +80,7 @@ export function QuestionnaireForm({ formAction, pending, error, form }: Question
                         control={form.control}
                         name="genres"
                         render={({ field }) => {
+                          const currentGenres = field.value ? field.value.split(',').filter(g => g) : [];
                           return (
                             <FormItem
                               key={item}
@@ -87,14 +88,15 @@ export function QuestionnaireForm({ formAction, pending, error, form }: Question
                             >
                               <FormControl>
                                 <Checkbox
-                                  checked={field.value?.includes(item)}
+                                  checked={currentGenres.includes(item)}
                                   onCheckedChange={(checked) => {
-                                    const currentGenres = field.value ? field.value.split(',').filter(g => g) : [];
+                                    let newGenres: string[];
                                     if (checked) {
-                                      field.onChange([...currentGenres, item].join(','));
+                                      newGenres = [...currentGenres, item];
                                     } else {
-                                      field.onChange(currentGenres.filter((value) => value !== item).join(','));
+                                      newGenres = currentGenres.filter((value) => value !== item);
                                     }
+                                    field.onChange(newGenres.join(','));
                                   }}
                                 />
                               </FormControl>
@@ -146,7 +148,7 @@ export function QuestionnaireForm({ formAction, pending, error, form }: Question
                   <FormItem>
                     <FormLabel>Favorite Directors (Optional)</FormLabel>
                     <FormControl>
-                      <Input placeholder="e.g., Christopher Nolan" {...field} name="directors"/>
+                      <Input placeholder="e.g., Christopher Nolan, Quentin Tarantino" {...field} name="directors"/>
                     </FormControl>
                   </FormItem>
                 )}

@@ -34,7 +34,7 @@ export async function getRecommendationsAction(
     if (!userInput.genres) {
       return {
         recommendations: null,
-        userPreferences: null,
+        userPreferences: userInput,
         error: 'Please select at least one genre.',
       }
     }
@@ -56,7 +56,14 @@ export async function getRecommendationsAction(
     console.error(e);
     return {
       recommendations: null,
-      userPreferences: null,
+      userPreferences: {
+        genres: formData.get('genres') as string || '',
+        actors: formData.get('actors') as string || '',
+        directors: formData.get('directors') as string || '',
+        themes: formData.get('themes') as string || '',
+        vibe: formData.get('vibe') as string || '',
+        timePeriod: formData.get('timePeriod') as string || '',
+      },
       error: e.message || 'Failed to generate recommendations.',
     };
   }
