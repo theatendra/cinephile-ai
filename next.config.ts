@@ -33,6 +33,12 @@ const nextConfig: NextConfig = {
         hostname: 'm.media-amazon.com',
         port: '',
         pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'storage.googleapis.com',
+        port: '',
+        pathname: '/**',
       }
     ],
   },
