@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useActionState, useEffect } from 'react';
+import { useState, useActionState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -51,17 +51,6 @@ export default function Home() {
       timePeriod: '',
     },
   });
-
-  const { setValue, watch } = form;
-  const watchedGenres = watch('genres');
-
-  useEffect(() => {
-    // This effect now correctly synchronizes the form state with the
-    // userPreferences from the server action state *only when they differ*.
-    if (userPreferences?.genres && userPreferences.genres !== watchedGenres) {
-      setValue('genres', userPreferences.genres, { shouldValidate: true });
-    }
-  }, [userPreferences, setValue, watchedGenres]);
 
   return (
     <div className="flex flex-col min-h-screen">
