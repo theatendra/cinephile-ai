@@ -6,7 +6,7 @@ export default function Loading() {
       <div className="flex items-center gap-4 mb-4">
         <Film className="w-12 h-12 text-primary" />
         <h1 className="font-headline text-5xl md:text-6xl text-center">
-          Cinephile
+          CinePhile
         </h1>
       </div>
       <div className="flex items-center gap-2 text-muted-foreground">
