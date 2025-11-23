@@ -62,7 +62,7 @@ export default function Home() {
       <header className="py-10">
         <h1 className="font-headline text-5xl md:text-6xl text-center flex items-center justify-center gap-4">
           <Film className="w-12 h-12 text-primary" />
-          ReelMind
+          Cinephile
         </h1>
         <p className="text-center text-muted-foreground mt-2 text-lg">Your personal AI movie curator.</p>
       </header>

@@ -3,7 +3,7 @@ import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
-  title: 'ReelMind',
+  title: 'Cinephile',
   description: 'Get personalized movie recommendations.',
 };
 
