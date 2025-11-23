@@ -33,15 +33,8 @@ export async function getRecommendationsAction(
     const aiResult: PersonalizedRecommendationsOutput =
       await generatePersonalizedRecommendations(userInput);
 
-    const recommendationsWithPlaceholders = aiResult.recommendations.map(
-      (rec, index) => ({
-        ...rec,
-        poster: PlaceHolderImages[index % PlaceHolderImages.length].imageUrl,
-      })
-    );
-
     return {
-      recommendations: recommendationsWithPlaceholders,
+      recommendations: aiResult.recommendations,
       userPreferences: userInput,
       error: null,
     };
