@@ -1,7 +1,6 @@
 'use client';
 
-import { useState } from 'react';
-import { useActionState } from 'react-dom';
+import { useState, useActionState } from 'react';
 import { Film, Mail } from 'lucide-react';
 import { getRecommendationsAction } from '@/app/actions';
 import { QuestionnaireForm } from '@/components/questionnaire-form';
@@ -11,6 +10,8 @@ import { RecommendationDetails } from '@/components/recommendation-details';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Skeleton } from '@/components/ui/skeleton';
 import type { Recommendation, QuestionnaireData } from '@/lib/types';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 const initialState: {
   recommendations: Recommendation[] | null;

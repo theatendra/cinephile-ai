@@ -10,6 +10,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ExternalLink, Film, MessageCircle, Star, Users, Youtube } from 'lucide-react';
 import { ScrollArea } from './ui/scroll-area';
+import { Button } from './ui/button';
 
 type RecommendationDetailsProps = {
   movie: Recommendation;
