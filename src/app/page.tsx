@@ -15,7 +15,6 @@ import { Skeleton } from '@/components/ui/skeleton';
 import type { Recommendation, QuestionnaireData } from '@/lib/types';
 
 const formSchema = z.object({
-  genres: z.string().optional(),
   actors: z.string().optional(),
   directors: z.string().optional(),
   themes: z.string().optional(),
@@ -43,7 +42,6 @@ export default function Home() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      genres: '',
       actors: '',
       directors: '',
       themes: '',

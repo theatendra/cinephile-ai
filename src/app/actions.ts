@@ -11,7 +11,6 @@ import {
   type DisplayDetailedMovieInformationOutput,
 } from '@/ai/flows/display-detailed-movie-information';
 import type { Recommendation, QuestionnaireData } from '@/lib/types';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export async function getRecommendationsAction(
   prevState: any,
@@ -23,7 +22,6 @@ export async function getRecommendationsAction(
 }> {
   try {
     const userInput: PersonalizedRecommendationsInput = {
-      genres: formData.get('genres') as string || '',
       actors: formData.get('actors') as string,
       directors: formData.get('directors') as string,
       themes: formData.get('themes') as string,
@@ -34,13 +32,8 @@ export async function getRecommendationsAction(
     const aiResult: PersonalizedRecommendationsOutput =
       await generatePersonalizedRecommendations(userInput);
 
-    const recommendationsWithPlaceholders = aiResult.recommendations.map((rec, index) => ({
-      ...rec,
-      poster: PlaceHolderImages[index % PlaceHolderImages.length]?.imageUrl || rec.poster,
-    }));
-
     return {
-      recommendations: recommendationsWithPlaceholders,
+      recommendations: aiResult.recommendations,
       userPreferences: userInput,
       error: null,
     };
@@ -49,7 +42,6 @@ export async function getRecommendationsAction(
     return {
       recommendations: null,
       userPreferences: {
-        genres: formData.get('genres') as string || '',
         actors: formData.get('actors') as string || '',
         directors: formData.get('directors') as string || '',
         themes: formData.get('themes') as string || '',
@@ -71,7 +63,6 @@ export async function getMovieDetailsAction(
       year: parseInt(movie.year, 10) || new Date().getFullYear(),
       imdbRating: movie.imdbRating,
       rottenTomatoesRating: movie.rottenTomatoesRating,
-      genres: userPreferences.genres ? userPreferences.genres.split(',').map(g => g.trim()) : [],
       actors: userPreferences.actors ? userPreferences.actors.split(',').map(a => a.trim()) : [],
       directors: userPreferences.directors ? userPreferences.directors.split(',').map(d => d.trim()) : [],
       themes: userPreferences.themes ? userPreferences.themes.split(',').map(t => t.trim()) : [],

@@ -16,25 +16,9 @@ import {
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Clapperboard, Loader2 } from 'lucide-react';
-import { Checkbox } from '@/components/ui/checkbox';
 import React from 'react';
 
-const genresList = [
-  'Sci-Fi',
-  'Thriller',
-  'Comedy',
-  'Romance',
-  'Action',
-  'Horror',
-  'Drama',
-  'Fantasy',
-  'Animation',
-  'Documentary',
-  'Mystery',
-];
-
 const formSchema = z.object({
-  genres: z.string().optional(),
   actors: z.string().optional(),
   directors: z.string().optional(),
   themes: z.string().optional(),
@@ -62,57 +46,6 @@ export function QuestionnaireForm({ formAction, pending, error, form }: Question
         <Form {...form}>
           <form action={formAction} className="space-y-8">
             <div className="grid md:grid-cols-2 gap-6">
-              <FormField
-                control={form.control}
-                name="genres"
-                render={() => (
-                  <FormItem>
-                    <div className="mb-4">
-                      <FormLabel className="text-base">Favorite Genres</FormLabel>
-                      <FormDescription>
-                        Select all that apply.
-                      </FormDescription>
-                    </div>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                    {genresList.map((item) => (
-                      <FormField
-                        key={item}
-                        control={form.control}
-                        name="genres"
-                        render={({ field }) => {
-                          const currentGenres = field.value ? field.value.split(',').filter(g => g) : [];
-                          return (
-                            <FormItem
-                              key={item}
-                              className="flex flex-row items-start space-x-3 space-y-0"
-                            >
-                              <FormControl>
-                                <Checkbox
-                                  checked={currentGenres.includes(item)}
-                                  onCheckedChange={(checked) => {
-                                    let newGenres: string[];
-                                    if (checked) {
-                                      newGenres = [...currentGenres, item];
-                                    } else {
-                                      newGenres = currentGenres.filter((value) => value !== item);
-                                    }
-                                    field.onChange(newGenres.join(','));
-                                  }}
-                                />
-                              </FormControl>
-                              <FormLabel className="font-normal">
-                                {item}
-                              </FormLabel>
-                            </FormItem>
-                          )
-                        }}
-                      />
-                    ))}
-                    </div>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
               <FormField
                 control={form.control}
                 name="vibe"

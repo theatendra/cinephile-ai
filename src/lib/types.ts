@@ -21,7 +21,6 @@ export type MovieDetails = {
 };
 
 export type QuestionnaireData = {
-  genres: string;
   actors: string;
   directors: string;
   themes: string;

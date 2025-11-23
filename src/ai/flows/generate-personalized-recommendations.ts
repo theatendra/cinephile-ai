@@ -11,7 +11,6 @@ import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
 const PersonalizedRecommendationsInputSchema = z.object({
-  genres: z.string().optional().describe('List of favorite movie genres, comma separated.'),
   actors: z.string().optional().describe('List of favorite actors, comma separated.'),
   directors: z.string().optional().describe('List of favorite directors, comma separated.'),
   themes: z.string().optional().describe('List of favorite movie themes, comma separated.'),
@@ -47,7 +46,6 @@ const prompt = ai.definePrompt({
   prompt: `You are a movie recommendation expert. Your task is to generate three movie recommendations based on user preferences.
 
 User Preferences:
-- Genres: {{{genres}}}
 - Vibe: {{{vibe}}}
 - Actors: {{{actors}}}
 - Directors: {{{directors}}}
@@ -55,11 +53,10 @@ User Preferences:
 - Time Period: {{{timePeriod}}}
 
 Your recommendations MUST adhere to the following rules:
-1.  If the user provides one or more 'genres', your recommendations must strictly belong to at least one of the selected genres. For example, if the user selects 'Romance', you MUST provide movies that are strictly categorized as 'Romance'. If they select 'Drama' and 'Romance', you must provide a mix of films that fit one or both of those exact categories.
-2.  If 'genres' are not provided, you should rely primarily on the user's 'vibe' to make your selections.
-3.  Consider other preferences like actors, directors, and themes to refine the recommendations, but the genre and vibe are the most important factors.
+1.  Rely primarily on the user's 'vibe' to make your selections.
+2.  Consider other preferences like actors, directors, and themes to refine the recommendations, but the vibe is the most important factor.
 
-Format the output as a JSON object with a 'recommendations' field. Each movie object in the 'recommendations' array should include the following keys: title, year, poster, imdbRating, rottenTomatoesRating, and vibe. Make sure the year is a string, not a number. If a rating isn't available, use "N/A".
+Format the output as a JSON object with a 'recommendations' field. Each movie object in the 'recommendations' array should include the following keys: title, year, poster, imdbRating, rottenTomatoesRating, and vibe. Make sure the year is a string, not a number. For the poster, provide a valid, publicly accessible URL to a real movie poster. If a rating isn't available, use "N/A".
   `,
 });
 
