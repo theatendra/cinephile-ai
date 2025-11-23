@@ -3,8 +3,8 @@
     {
       "id": "rec-1",
       "description": "Placeholder for first movie recommendation",
-      "imageUrl": "https://images.unsplash.com/photo-1590179068383-b9c69aacebd3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxtb3ZpZSUyMHBvc3RlcnxlbnwwfHx8fDE3NjM3OTI5NDF8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "movie poster"
+      "imageUrl": "https://storage.googleapis.com/aifirebase-7a255.appspot.com/users%2FwYx2aB11VuhJpB0Pj1iB%2Fimages%2Fgenerations%2F1719914757530-0-movie-poster-a-couple-embracing-on-a-bridge-with-a-cityscape-behind-them-and-a-dramatic-cloudy-sky-above-The-scene-has-a-slightly-surreal-or-fantastical-element-with-clock-faces-and-time-related-imagery-integrated-into-the-composition-The-overall-mood-is-romantic-and-epic-The-color-palette-is-somewhat-muted-with-dramatic-lighting-The-image-has-a-painterly-or-stylized-feel.jpg?alt=media&token=e937d2f9-7157-4171-8b04-8b65287f3479",
+      "imageHint": "couple bridge"
     },
     {
       "id": "rec-2",
