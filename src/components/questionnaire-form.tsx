@@ -1,7 +1,6 @@
 'use client';
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+import type { UseFormReturn } from 'react-hook-form';
 import * as z from 'zod';
 
 import { Button } from '@/components/ui/button';
@@ -47,21 +46,10 @@ type QuestionnaireFormProps = {
   formAction: (payload: FormData) => void;
   pending: boolean;
   error: string | null;
+  form: UseFormReturn<z.infer<typeof formSchema>>;
 };
 
-export function QuestionnaireForm({ formAction, pending, error }: QuestionnaireFormProps) {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      genres: '',
-      actors: '',
-      directors: '',
-      themes: '',
-      vibe: '',
-      timePeriod: '',
-    },
-  });
-
+export function QuestionnaireForm({ formAction, pending, error, form }: QuestionnaireFormProps) {
   return (
     <Card className="w-full max-w-4xl mx-auto shadow-xl">
       <CardHeader>

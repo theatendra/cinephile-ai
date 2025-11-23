@@ -1,6 +1,9 @@
 'use client';
 
 import { useState, useActionState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
 import { Film, Mail } from 'lucide-react';
 import { getRecommendationsAction } from '@/app/actions';
 import { QuestionnaireForm } from '@/components/questionnaire-form';
@@ -10,8 +13,15 @@ import { RecommendationDetails } from '@/components/recommendation-details';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Skeleton } from '@/components/ui/skeleton';
 import type { Recommendation, QuestionnaireData } from '@/lib/types';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
+
+const formSchema = z.object({
+  genres: z.string().min(1, 'Please select at least one genre.'),
+  actors: z.string().optional(),
+  directors: z.string().optional(),
+  themes: z.string().optional(),
+  vibe: z.string().min(1, 'Please describe your current vibe.'),
+  timePeriod: z.string().optional(),
+});
 
 const initialState: {
   recommendations: Recommendation[] | null;
@@ -30,6 +40,18 @@ export default function Home() {
   const recommendations = state?.recommendations;
   const userPreferences = state?.userPreferences;
 
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      genres: '',
+      actors: '',
+      directors: '',
+      themes: '',
+      vibe: '',
+      timePeriod: '',
+    },
+  });
+
   return (
     <div className="flex flex-col min-h-screen">
       <header className="py-10">
@@ -42,7 +64,7 @@ export default function Home() {
       
       <main className="flex-grow container mx-auto px-4 py-8">
         <section id="questionnaire" className="mb-16">
-          <QuestionnaireForm formAction={formAction} pending={pending} error={state?.error} />
+          <QuestionnaireForm formAction={formAction} pending={pending} error={state?.error} form={form} />
         </section>
 
         {pending && (
