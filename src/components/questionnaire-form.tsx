@@ -62,16 +62,6 @@ export function QuestionnaireForm({ formAction, pending, error }: QuestionnaireF
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    const formData = new FormData();
-    for (const key in values) {
-      if (Object.prototype.hasOwnProperty.call(values, key)) {
-        formData.append(key, (values as any)[key]);
-      }
-    }
-    formAction(formData);
-  }
-
   return (
     <Card className="w-full max-w-4xl mx-auto shadow-xl">
       <CardHeader>
@@ -82,7 +72,7 @@ export function QuestionnaireForm({ formAction, pending, error }: QuestionnaireF
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form action={formAction} className="space-y-8">
             <div className="grid md:grid-cols-2 gap-6">
               <FormField
                 control={form.control}
@@ -156,7 +146,7 @@ export function QuestionnaireForm({ formAction, pending, error }: QuestionnaireF
                   <FormItem>
                     <FormLabel>Favorite Actors (Optional)</FormLabel>
                     <FormControl>
-                      <Input placeholder="e.g., Tom Hanks, Denzel Washington" {...field} />
+                      <Input placeholder="e.g., Tom Hanks, Denzel Washington" {...field} name="actors" />
                     </FormControl>
                   </FormItem>
                 )}
@@ -168,7 +158,7 @@ export function QuestionnaireForm({ formAction, pending, error }: QuestionnaireF
                   <FormItem>
                     <FormLabel>Favorite Directors (Optional)</FormLabel>
                     <FormControl>
-                      <Input placeholder="e.g., Christopher Nolan" {...field} />
+                      <Input placeholder="e.g., Christopher Nolan" {...field} name="directors"/>
                     </FormControl>
                   </FormItem>
                 )}
@@ -180,7 +170,7 @@ export function QuestionnaireForm({ formAction, pending, error }: QuestionnaireF
                   <FormItem>
                     <FormLabel>Favorite Themes (Optional)</FormLabel>
                     <FormControl>
-                      <Input placeholder="e.g., Underdog story, space exploration" {...field} />
+                      <Input placeholder="e.g., Underdog story, space exploration" {...field} name="themes"/>
                     </FormControl>
                   </FormItem>
                 )}
@@ -192,7 +182,7 @@ export function QuestionnaireForm({ formAction, pending, error }: QuestionnaireF
                   <FormItem>
                     <FormLabel>Preferred Time Period (Optional)</FormLabel>
                     <FormControl>
-                      <Input placeholder="e.g., 1990s, modern, black and white" {...field} />
+                      <Input placeholder="e.g., 1990s, modern, black and white" {...field} name="timePeriod"/>
                     </FormControl>
                   </FormItem>
                 )}
