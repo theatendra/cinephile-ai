@@ -188,6 +188,7 @@ export function QuestionnaireForm({ formAction, pending, error }: QuestionnaireF
                 )}
               />
             </div>
+             <input type="hidden" {...form.register('genres')} />
 
             <Button type="submit" disabled={pending} className="w-full md:w-auto bg-accent text-accent-foreground hover:bg-accent/90">
               {pending ? (

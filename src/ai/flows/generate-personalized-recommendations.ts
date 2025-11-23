@@ -12,11 +12,11 @@ import {z} from 'genkit';
 
 const PersonalizedRecommendationsInputSchema = z.object({
   genres: z.string().describe('List of favorite movie genres, comma separated.'),
-  actors: z.string().describe('List of favorite actors, comma separated.'),
-  directors: z.string().describe('List of favorite directors, comma separated.'),
-  themes: z.string().describe('List of favorite movie themes, comma separated.'),
+  actors: z.string().optional().describe('List of favorite actors, comma separated.'),
+  directors: z.string().optional().describe('List of favorite directors, comma separated.'),
+  themes: z.string().optional().describe('List of favorite movie themes, comma separated.'),
   vibe: z.string().describe('Current mood or vibe the user is in.'),
-  timePeriod: z.string().describe('Preferred time period for movies.'),
+  timePeriod: z.string().optional().describe('Preferred time period for movies.'),
 });
 export type PersonalizedRecommendationsInput = z.infer<typeof PersonalizedRecommendationsInputSchema>;
 
