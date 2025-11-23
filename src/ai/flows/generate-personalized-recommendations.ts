@@ -11,7 +11,7 @@ import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
 const PersonalizedRecommendationsInputSchema = z.object({
-  genres: z.string().describe('List of favorite movie genres, comma separated.'),
+  genres: z.string().optional().describe('List of favorite movie genres, comma separated.'),
   actors: z.string().optional().describe('List of favorite actors, comma separated.'),
   directors: z.string().optional().describe('List of favorite directors, comma separated.'),
   themes: z.string().optional().describe('List of favorite movie themes, comma separated.'),
@@ -44,7 +44,7 @@ const prompt = ai.definePrompt({
   name: 'personalizedRecommendationsPrompt',
   input: {schema: PersonalizedRecommendationsInputSchema},
   output: {schema: PersonalizedRecommendationsOutputSchema},
-  prompt: `Given the following user preferences, generate three movie recommendations.
+  prompt: `Given the following user preferences, generate three movie recommendations. If genres are not provided, rely primarily on the user's 'vibe'.
 
   Genres: {{{genres}}}
   Actors: {{{actors}}}
