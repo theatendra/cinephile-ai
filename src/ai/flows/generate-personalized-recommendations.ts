@@ -44,16 +44,22 @@ const prompt = ai.definePrompt({
   name: 'personalizedRecommendationsPrompt',
   input: {schema: PersonalizedRecommendationsInputSchema},
   output: {schema: PersonalizedRecommendationsOutputSchema},
-  prompt: `Given the following user preferences, generate three movie recommendations. If genres are not provided, rely primarily on the user's 'vibe'.
+  prompt: `You are a movie recommendation expert. Your task is to generate three movie recommendations based on user preferences.
 
-  Genres: {{{genres}}}
-  Actors: {{{actors}}}
-  Directors: {{{directors}}}
-  Themes: {{{themes}}}
-  Vibe: {{{vibe}}}
-  Time Period: {{{timePeriod}}}
+User Preferences:
+- Genres: {{{genres}}}
+- Vibe: {{{vibe}}}
+- Actors: {{{actors}}}
+- Directors: {{{directors}}}
+- Themes: {{{themes}}}
+- Time Period: {{{timePeriod}}}
 
-  Format the output as a JSON object with a 'recommendations' field. Each movie object in the 'recommendations' array should include the following keys: title, year, poster, imdbRating, rottenTomatoesRating, and vibe. Make sure the year is a string, not a number. If a rating isn't available, use "N/A".
+Your recommendations MUST adhere to the following rules:
+1.  If the user provides one or more 'genres', your recommendations must strictly belong to at least one of the selected genres. For example, if the user selects 'Romance' and 'Drama', you must provide a mix of romantic and dramatic films.
+2.  If 'genres' are not provided, you should rely primarily on the user's 'vibe' to make your selections.
+3.  Consider other preferences like actors, directors, and themes to refine the recommendations, but the genre and vibe are the most important factors.
+
+Format the output as a JSON object with a 'recommendations' field. Each movie object in the 'recommendations' array should include the following keys: title, year, poster, imdbRating, rottenTomatoesRating, and vibe. Make sure the year is a string, not a number. If a rating isn't available, use "N/A".
   `,
 });
 
