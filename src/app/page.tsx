@@ -10,7 +10,7 @@ import { QuestionnaireForm } from '@/components/questionnaire-form';
 import { SubscriptionForm } from '@/components/subscription-form';
 import { RecommendationCard } from '@/components/recommendation-card';
 import { RecommendationDetails } from '@/components/recommendation-details';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { Skeleton } from '@/components/ui/skeleton';
 import type { Recommendation, QuestionnaireData } from '@/lib/types';
 import { getStreamingIcon } from '@/components/streaming-icons';
@@ -98,8 +98,11 @@ export default function Home() {
 
         <Dialog open={!!selectedMovie} onOpenChange={(isOpen) => !isOpen && setSelectedMovie(null)}>
           <DialogContent className="max-w-3xl w-full max-h-[90vh] p-0">
-            {selectedMovie && userPreferences && (
-              <RecommendationDetails movie={selectedMovie} userPreferences={userPreferences} />
+             {selectedMovie && userPreferences && (
+              <>
+                <DialogTitle className="sr-only">{selectedMovie.title}</DialogTitle>
+                <RecommendationDetails movie={selectedMovie} userPreferences={userPreferences} />
+              </>
             )}
           </DialogContent>
         </Dialog>
